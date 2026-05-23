@@ -1137,4 +1137,556 @@ Day 2 - 17th May 2026
   761  history
 
 		
+
+	
+######################
+Day 3 - 23th May 2026
+######################			
 			
+	- Git Branching Demo :::
+	
+		git branch 			# Get the list of Branches 
+		
+		git branch <new_branch_name> 		# Create a New Branch 
+		
+		git switch -c <new_branch_name>		# Create a New Branch & Switch the Control to New Branch
+		
+		git switch <Branch_Name>			# Switch the Control to the existing Branch	
+	
+	
+	Eg>:
+	
+		Repo1:
+		
+			master : cm1 
+			
+			git branch feature1 feature2 
+			
+			git switch feature1
+			
+			feature1 : cm1 
+			
+					cm1, f1cm1
+					
+					git switch master 				
+					
+					git merge feature1 				# Execute from the target branch 
+					
+					
+
+	- Handle Merge Conflict:::
+	
+		- How Merge Conflict Occur ???
+				
+			- When more than one user/feature try to update same file at the same level, merge conflict occurs.
+			
+		- Fix the Merge Conflict ???		
+		
+			- Identify the file(s) causing the merge conflicts
+			- Open the file and review the changes 
+			- Upon review, decide which changes to be retained/delete from that file(s).
+			- Update the file by removing the extra header/footer notes and contents.
+			- Perform git add and git commit to fix the issue.
+					
+		
+	- DevOps/MLOps :::
+	
+		- On DevOps process Perspective, prevent Merge Conflicts.
+		
+		
+	- Git Rebase :::
+	
+		- Rebase is used to maintain linear commit history 
+		- Rebase is used to keep the current branch in-sync with target branch within a Local Repository
+		- Rebase can prevent merge-conflicts in the target branch 
+		- As a best practise, it is always recommended to use rebase before merge	
+
+		Eg.: 
+		
+			Repo1:
+				master: cm1,cm2,cm3
+						
+						cm1,cm2,cm3,f1cm1,f1cm2,f1cm3						 	# Upon Merging Feature1
+						
+						cm1,cm2,cm3,f2cm1,f2cm2,f2cm3,f1cm1,f1cm2,f1cm3			# upon Merging Feature2 without proper rebase
+				
+						cm1,cm2,cm3,f1cm1,f1cm2,f1cm3,f2cm1,f2cm2,f2cm3			# Expected Commit History upon Merges
+																				# upon Merging Feature2 with proper rebase
+						
+					feature1: cm1,cm2,cm3
+								cm1,cm2,cm3,f1cm1,f1cm2,f1cm3
+								
+								git switch master 
+								
+								git merge feature1
+								
+
+					feature2: cm1,cm2,cm3
+								cm1,cm2,cm3,f2cm1,f2cm2,f2cm3
+								
+								git rebase master 
+									
+								cm1,cm2,cm3,f1cm1,f1cm2,f1cm3,f2cm1,f2cm2,f2cm3
+								
+								
+								git switch master 
+								
+								git merge feature2
+								
+								git rebase feature1
+								
+								
+								
+	- GIT Squash :::
+		
+			- Is a Merge Option 
+			- Is used to combine more than one commits into a single commit point. 
+
+
+		Repo1:
+		
+			master: cm1,cm2,cm3
+			
+						cm1,cm2,cm3,f1cm1,f1cm2,3,4,5,6,7,8,9,.................,200
+						
+						cm1,cm2,cm3,cm4				# cm4 is changes from feature1
+			
+				feature1: cm1,cm2,cm3
+								cm1,cm2,cm3,f1cm1,f1cm2,3,4,5,6,7,8,9,.................,200
+								
+								
+						git switch master 
+						
+						git merge --squash feature1 
+						
+							git commit -m <msg1>
+												
+						
+	- git cherry-pick :::
+			- Is to Merge the specific commit to the target branch 
+			
+			Eg,: 
+			
+				git cherry-pick <commit_id> <commit_id2>
+				
+				
+				git cherry-pick <app_team2_commit_id>
+								
+	
+	- Git Remote Repository Management :::::
+	
+		- GITHub Remote Repository :
+		
+			- Create GitHub Repositories
+			
+			- Working with Branches 
+			
+			- Working with remote, clone, pull, fetch 
+			
+			
+		- Pull Request ::: 		# Created by the Developers 
+		
+		
+	- Developer's workload :
+	
+		- Enhance/fix
+
+		- New Project 
+		
+	-	git clone 			# To Copy/clone the entire remote repository to Local Machine 
+	
+	- 	git add				# To add the changes from Working_Directory to Staging_Area
+	
+	- 	git commit 			# To Create a permanent commit from staging area to the Local Repository
+	
+	- 	git push 			# To Push the changes from Local Repository to Remote Repository
+	
+	- 	git fetch/pull 		
+				- Both are used to handle the incremental changes from Remote Repository				
+				
+			- git fetch ::
+			
+					# It will check for the incremental changes in the remote repository, if the incremental changes existing, git fetch will update only the Local Repository. It will never update the Working Directory.
+					# Developers need to do explicit merge / pull to bring the changes to Working Directory	
+		
+			- git pull ::
+			
+					# It will check for the incremental changes in the remote repository, if the incremental changes existing, git pull will update only the Local Repository as well the Working Directory.	
+
+					# git pull = git fetch + git merge 			
+	
+	
+	
+	- git remote 			# To Manage the Remote Repositories
+	
+		git remote -v 		# To get the list of Remote Repository
+	
+		git push -u origin local-feature1 
+		
+			- GitHub Access Token :::
+			
+				
+				- sfsfsadfsafsadfsdf
+				
+					- Stored in the Windows Creddential Manager!
+	
+	
+	- Packaging ML Model 			# Deployment of ML Projects 
+	
+		- Containerization using Docker ::
+		
+		
+		Working Environment ::
+		
+			- AWS Cloud Access :::		Create VMs(EC2 Instances)
+
+  504  cd Edu_May17_MLOps/
+  505  clear
+  506  ls
+  507  mkdir temprepo1
+  508  cd temprepo1/
+  509  ls
+  510  git init
+  511  clear
+  512  ls -a
+  513  clear
+  514  git branch feature1
+  515  git status
+  516  echo "rec1" >> f1.txt
+  517  git add .
+  518  git commit -m "cm1"
+  519  git branch feature1
+  520  git branch feature2
+  521  git branch
+  522  clear
+  523  git branch
+  524  git log --oneline
+  525  ls
+  526  git switch feature1
+  527  ls
+  528  git log --oneline
+  529  ls
+  530  clear
+  531  ls
+  532  echo "rec1" >> q1.txt
+  533  git add .
+  534  git commit -m "f1cm1"
+  535  ls
+  536  git log --oneline
+  537  git switch master
+  538  ls
+  539  git log --oneline
+  540  clear
+  541  git merge feature1
+  542  ls
+  543  git log --oneline
+  544  cd ..
+  545  clear
+  546  ls
+  547  mkdir temprepo2
+  548  cd temprepo2/
+  549  git init
+  550  echo "rec1" >> l1.txt
+  551  git add .
+  552  git commit -m "cm1"
+  553  clear
+  554  git branch feature1
+  555  git branch feature2
+  556  ls
+  557  git log --oneline
+  558  git switch feature1
+  559  ls
+  560  git log --oneline
+  561  echo "record2 from feature1" >> l1.txt
+  562  git add .
+  563  git commit -m "f1cm1"
+  564  clear
+  565  cat l1.txt
+  566  git log --oneline
+  567  git switch master
+  568  git merge feature1
+  569  cat l1.txt
+  570  git switch feature2
+  571  clear
+  572  git log --oneline
+  573  ls
+  574  cat l1.txt
+  575  echo "record2 from feature2" >> l1.txt
+  576  cat l1.txt
+  577  git add .
+  578  git commit -m "f2cm1"
+  579  git switch master
+  580  clear
+  581  git log --oneline
+  582  cat l1.txt
+  583  git merge feature2
+  584  clear
+  585  git status
+  586  cat l1.txt
+  587  vi l1.txt
+  588  git add .
+  589  git commit -m "Fixed Merge Conflicts"
+  590  clear
+  591  cd ..
+  592  clear
+  593  mkdir temprepo3
+  594  cd temprepo3/
+  595  clear
+  596  git init
+  597  echo "rec1" >> q1.txt
+  598  git add .
+  599  git commit -m "cm1"
+  600  echo "rec1" >> q2.txt
+  601  git add .
+  602  git commit -m "cm2"
+  603  clear
+  604  git branch feature1
+  605  git branch feature2
+  606  git switch feature1
+  607  ls
+  608  git log --oneline
+  609  echo "rec1" >> s1.txt
+  610  git add .
+  611  git commit -m "f1cm1"
+  612  echo "rec1" >> s2.txt
+  613  git add .
+  614  git commit -m "f1cm2"
+  615  echo "rec1" >> s3.txt
+  616  git add .
+  617  git commit -m "f1cm3"
+  618  clear
+  619  ls
+  620  git log --oneline
+  621  git switch master
+  622  git log --oneline
+  623  ls
+  624  git merge feature1
+  625  clear
+  626  ls
+  627  git log --oneline
+  628  git switch feature2
+  629  ls
+  630  echo "rec1" >> k1.txt
+  631  git add .
+  632  git commit -m "f2cm1"
+  633  echo "rec1" >> k2.txt
+  634  git add .
+  635  git commit -m "f2cm2"
+  636  echo "rec1" >> k3.txt
+  637  git add .
+  638  git commit -m "f2cm3"
+  639  echo "rec1" >> k4.txt
+  640  git add .
+  641  git commit -m "f2cm4"
+  642  clear
+  643  ls
+  644  git log --oneline
+  645  ls
+  646  git rebase master
+  647  ls
+  648  git log --oneline
+  649  clear
+  650  git switch master
+  651  git merge feature2
+  652  clear
+  653  ls
+  654  git status
+  655  git log --oneline
+  656  git switch feature1
+  657  git log --oneline
+  658  ls
+  659  git rebase master
+  660  ls
+  661  git log --oneline
+  662  clear
+  663  git status
+  664  git log --oneline
+  665  echo "rec1" >> i1
+  666  git add .
+  667  git commit -m "f1cm1.1"
+  668  echo "rec1" >> i2
+  669  git add .
+  670  git commit -m "f1cm1.2"
+  671  echo "rec1" >> i3
+  672  git add .
+  673  git commit -m "f1cm1.3"
+  674  echo "rec1" >> i4
+  675  git add .
+  676  git commit -m "f1cm1.4"
+  677  echo "rec1" >> i5
+  678  git add .
+  679  git commit -m "f1cm1.5"
+  680  clear
+  681  git log --oneline
+  682  git rebase master
+  683  git switch master
+  684  git merge --squash feature1
+  685  git status
+  686  git commit -m "Combined latest changes from feature1"
+  687  clear
+  688  ls
+  689  git log --oneline
+  690  git show 8056fbb
+  691  clear
+  692  cd ..
+  693  mkdir remoterepos
+  694  cd remoterepos/
+  695  clear
+  696  git clone https://github.com/Edu-MLOps-May17-26/testremoterepo1.git
+  697  ls
+  698  cd testremoterepo1/
+  699  ls
+  700  git remote -v
+  701  git status
+  702  git switch -c local-feature1
+  703  ls
+  704  git status
+  705  ls
+  706  echo "rec1" >> local-file1
+  707  git add .
+  708  git commit -m "local file1 created"
+  709  ls
+  710  git log --oneline
+  711  git status status
+  712  git status
+  713  git remote -v
+  714  git log --oneline
+  715  git push -u origin local-feature1
+  716  clear
+  717  git switch mains
+  718  clear
+  719  git switch main
+  720  git status
+  721  git log --oneline
+  722  git fetch
+  723  git status
+  724  git pull
+  725  ls
+  726  cear
+  727  clear
+  728  history
+
+
+
+Working with MLOps :::
+
+	-> Working Environment :
+		
+		- AWS Management Console :::
+			
+		- Authentication Modes:			TO setup secure connection between the Servers
+		
+			- Password based Authentication
+			
+			- Token Authentication
+			
+			- Key Based Authentication :::
+			
+				- Based on;
+				
+					- Public Key
+					
+					- Private Key.
+					
+					
+					- authorized keys file :
+					
+					
+		Connect to EC2 Instances :
+		
+			- EC2 Instance Connecion option	:::		# using Web Browser
+			
+			
+
+			- SSH Agents 							# Windows Users 
+			
+				- MobaXterm 					# https://mobaxterm.mobatek.net/download-home-edition.html
+				
+												# Choose Installer Edition & Follow the instructions 
+				
+				- Putty
+				
+				
+				
+			
+			- Using Terminal Windows:				# Linux/Mac/Windows 
+			
+
+ 
+ 
+ 
+ 
+			
+				https://aws.amazon.com/console/
+
+		- Create AWS Free Tier Account :::
+			https://aws.amazon.com/console/
+			
+			https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html
+			
+				-> Active Email_ID, Mobile_Number, Credit/Debit Card(Enabled with International Transaction)
+				-> PAN Number
+				
+				-> 12 Months -> 6 Months Free Tier 
+
+
+		-> Login to AWS Console as a root user.
+	
+			- Billing Management 
+			
+			- AWS Region 
+	
+			- AWS Services 			
+
+				- IAM Service :	Identity & Access Management Services 
+				
+					- Authentication ::	Who can Access ?
+					
+					- Authorization ::	What can be done?
+					
+					- RBAC 	:: Role Based Access Control :
+					
+						user1 : Admin_Team  
+						
+						user2,10 : Dev_Team
+				
+					- Create IAM User 			--> Individual User 
+					
+					- Create IAM User Group		--> Admin_Group --> Add user1 
+					
+					- IAM Policy --> Define the Permissions 
+					
+						https://682033467551.signin.aws.amazon.com/console	
+					
+						mlopsapruser1
+						
+						MFA ===> Mandatory for root user 
+					
+					- IAM Policies(permissions) --> Can be assigned to the Users/Groups 
+					
+					- IAM Roles 				--> Attached to EC2 Service 
+					
+													--> Attach the IAM while creating an EC2 Instance 
+					
+
+
+
+
+			
+			
+			
+		
+		- MLOps Tools : DVC
+		
+		- MLFlow 
+		
+		- Kubernetes
+		
+		- Kubeflow 
+		
+	- GitHub Actions :::
+	
+		- To Automate the the changes using Build and Deployments.
+	
+	
+				
