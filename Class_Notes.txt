@@ -1689,4 +1689,168 @@ Working with MLOps :::
 		- To Automate the the changes using Build and Deployments.
 	
 	
+
+######################
+Day 4 - 24th May 2026
+######################	
+
+
+
+		-> Login to AWS Console as a root user.
+		
+		
+		- AWS Services :
+		
+			--> IAM Service 			# To Create IAM User & IAM Roles 
+			
+			--> S3 Service 				# Create S3 Buckets to Maintain the Model Datasets & Model Artifacts 
+			
+			--> EC2 Service				# Create Virtual Machines(Dev,Build,Test,Production Environments)
+			
+			
+			
+			IAM User Profiles :
+			
+				root user 				# Used to Manage the AWS Account and other users.
 				
+				IAM User 				# Used to create AWS Services for Projects  
+										# Create Resources like EC2 Instances(VMs) / S3 Bucket as an IAM User.
+										
+				IAM User 				# Individual USers 			user1 (Developer)
+
+				IAM User Group 			# User Groups based on Roles/Environment/Teams
+	
+				IAM Policies			# Set of rules/Permissions		
+										# Assigned to the IAM Users/Groups
+				
+				IAM Roles 				# Define Set of rules/Permissions
+										# Assigned to the AWS Services
+										
+										# Attach this IAM Role to the EC2 Instance.
+										
+			
+			S3 ::::						# Create S3 Buckets to Maintain the Model Datasets & Model Artifacts 
+			
+										loksaimlops1726-s3bkt1  ==> s3://loksaimlops1726-s3bkt1
+										
+										
+										https://loksaimlops1726-s3bkt1.s3.ap-south-1.amazonaws.com/index.html
+				
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement1",
+			"Effect": "Allow",													# Allow / Deny 
+			"Principal": "*",													# Identify the IAM Users(root/mlopsuser1)
+			"Action": "s3:*",													# Action: get/list/write/delete
+			"Resource": "arn:aws:s3:::loksaimlops1726-s3bkt1/*"					# Name of the S2 Bucket
+		}
+	]
+}
+
+
+
+				
+										# Interact with S3 using AWS Cli Commands - recommended!
+			
+										# Console 
+				
+				
+	--> EC2 Service				# Create Virtual Machines(Dev,Build,Test,Production Environments)	:::	
+
+			--> EC2 Instance	# To Setup Build Environment 
+								# Create an EC2 Instance with IAM Role attached.
+								
+								# Setup Security Group - Inbound Rules. 
+								
+				# Login to EC2 Instance :
+				
+					- sudo -i 
+					
+					- apt update -y
+					
+				
+					# Setup AWS Cli on the EC2 Instance 		# Used to access S2 Bucket 
+						
+
+						# To Setup AWS CLI ::::
+
+						sudo apt install -y unzip curl
+
+						# Download AWS CLI v2
+						curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+
+						# Unzip installer
+						unzip awscliv2.zip
+
+						# Install AWS CLI
+						sudo ./aws/install
+
+						# Verify Installation
+						aws --version
+
+					$ aws s3 ls 					# Get the list of s3 bucket - to quickly check for s3 access from EC2 Instance.
+						
+		
+	--> Install MLOps related tools :::
+
+			git 
+			docker 
+			python 
+			create virtual environment using python 
+				- DVC  
+				- Streamlit						# Tool To creat UI for for ML Model 
+				- Fast-API 						# Tool To creat API for for ML Model 
+			
+
+			# install git,python,docker	on VM Level 
+			
+				sudo apt install -y \
+					  python3.12 python3.12-venv python3-pip
+
+
+				Create Virtual Environment ::::
+				
+						python3.12 -m venv loksai-venv
+
+						source loksai-venv/bin/activate
+
+					  
+				sudo apt install docker.io -y
+				
+				
+	- Environment:
+	
+		Dev 			--> 	Owned by the Developers 
+		
+								- Create ML Model Web Interface using Streamlit 
+								
+								- Create ML Model API using Fast-API
+			
+		
+		Build 			--> 	Owned by the DevOps/MLOps Team 
+		
+		Target Environments :
+		
+			- Test 				# Deploy the Package(Docker Image) & Execute 	
+		
+			- Prod 
+		
+
+
+Next: 
+
+	- Create ML Project 
+	
+	- Build ML Project 
+	
+	- Prepare Datasets & Version the Dataset using DVC 
+
+	- DVC Pipeline		--> Validate Dataset, Process Dataset, Train the Model
+
+	- Model Experimentation using MLFlow 
+	
+	- Packaging using Docker 
+	
+	- Deploy using Kubernetes 				
