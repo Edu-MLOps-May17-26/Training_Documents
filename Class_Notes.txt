@@ -1854,3 +1854,310 @@ Next:
 	- Packaging using Docker 
 	
 	- Deploy using Kubernetes 				
+
+
+
+
+######################
+Day 5 - 30th May 2026
+######################	
+
+
+	- ML Project :
+	
+		overview of ml project
+		
+		Login to ML_Build Server:
+		
+			git clone https://github.com/Edu-MLOps-May17-26/mlops-e2e-project.git
+			
+		ML_Project:
+
+			ML_Project Workspace Folder 
+			
+				# Owned By ML Engineers :
+				
+					- src						DVC 	--> Used by DVC Pipeline 
+						- validate
+						- preprocess
+						- train
+						
+					- dvc.yaml					DVC Pipeline Script		
+					
+					- ui						# Developed using Streamlit 
+						- app.py
+						
+					
+					- api 						# Developed using Fast-API
+						- main.py
+				
+				
+				 # Owned by DeVops/MLOps Team :
+				 
+					- Docker
+						- dockerfile.api
+						- dockerfile.ui
+						
+					- Kubernetes
+						- api-deployment.yaml 
+						- ui-deployment.yaml
+						
+					- .github/workflows			# To Automate Builds and Deployment
+						- mlops-e2e-cicd.yaml
+				
+		DVC :::
+		
+			- Build the ML Model --> 
+			
+				- Train the ML Model and create the artifacts - *.pkl
+				
+				- Use dvc.yaml(Manifest file) to invoke the py scripts 
+				
+					dvc repro 		# Command is to execute the DVC Pipeline.
+			
+		
+		dvc pipeline(dvc) (vs) CICD Pipeline (github-actions)
+		
+		
+		- Deploy the ML Model Package - *.pkl to Target Environments:
+		
+			- Docker 		# Package ML Model 
+			
+			- Kubernetes 
+					
+			
+
+
+	- Containerization using Docker :::
+	
+		- Containerization	- Is a process of packaging the Application along with its dependencies.
+		
+							- It is used to Containerize the Micro-Service based Application Architecture
+			
+							- Containerize ML Model using Docker.
+
+		- Working with Docker :
+		
+			Terminologies/Concepts ::
+			
+				- Container Engine 		- To create & manage the Container Images and Containers
+										- Docker Container Engine
+										
+				- Container Images		- Is the static file, that define the properties and dependencies to create Containers
+										- It is non-executable 
+										- It composed of various layers created using Dockerfile Instructions
+	
+				- Container 			- Is an executable unit of Container Images 	
+
+				- Container Registry 	- Used to version control the container images 
+
+						Version Control System:
+						
+							github 					# Version Control the Source Codes 
+							
+							Artifactory Libraries 	# Version Control the Application Artifacts
+
+							Container Registry 		# Version Control the container images 
+													# DockerHub - hub.docker.com
+							
+								
+					GITHUB Repo 					S3 Buckets/JFrog			DockerHub	
+						
+						sample.py_V1.0		---->		*.pk1_v1.0		---->		ml_app_Img:v1.0
+								
+						sample.py_V1.1		---->		*.pk1_v1.1		---->		ml_app_Img:v1.1
+					
+						sample.py_V1.2		---->		*.pk1_v1.2		---->		ml_app_Img:v1.2
+							
+							
+				- Container Repository	- Is the subset of Container Registry		
+										- Can be created based on environments/teams/services.....
+										
+										
+		- Properties of Containers :
+		
+			- Containers are called as OS Level Virtualization 
+			- Containers are Created using Container Engine(like Docker)
+			- Containers are used to Execute the Application/Task, Not any Operating System.
+			- Containers will automatically goes to EXIT State, if there is not Active Application/Task.
+			- Containers run in its own isolated Address Space 
+			- containers utilize the properties of Based OS like Namespace & Control Groups of the Kernel.
+			
+		
+
+		- Working with Docker :::
+		
+			- Install Docker Engine on the same Build Server(AWS Ubuntu Instance):
+			
+				- sudo apt install docker.io -y
+			
+		- Use docker Cli Commands to interact with Docker Engine.
+		
+			- docker --version 
+			
+			- docker ps 
+			
+			- docker ps -a 
+			
+		- Misc. Docker CLI Commands :
+		
+			- docker images 	# To get the list of All Images present in the local system.
+		
+			- docker ps 		# To get the list of Active Containers
+		
+			- docker ps -a 		# To get the list of Active & Inactive Containers
+		
+		
+			- docker pull		# Just Download Container Image from Container Registry 
+			
+				docker pull <image>:<tag>
+
+				docker pull <image>			# Always pull the latest version of the images 
+				(or)
+				docker pull <image>:latest
+				
+				
+			- docker run 		# To Create and Execute the Docker Container
+			
+				- docker run <image_name>
+				
+				
+			Modes of Container Execution:
+			
+				- Attached/Foreground Mode 						# Default
+					
+					docker run ubuntu sleep 20
+				
+				
+				- Detached/Background Mode 	
+					
+					docker run -d ubuntu sleep 20	
+
+
+				- Interactive Mode :
+				
+					- docker run -it ubuntu bash 
+					
+					
+				- Start Container 		
+			
+						docker start <Container_ID>
+			
+				- Login to Container
+					
+						docker exec -it <Container_ID> bash 
+
+				- Stop 
+						docker stop <Container_ID>
+
+					
+
+		- Docker Network using Port Mapping :
+		
+				- It is map the Container Port with the Host Port.
+		
+		
+			docker run -p <host_port:container:port> tomcat:8.0 
+			
+			
+				docker run -p 8085:8080 tomcat:8.0 
+				
+				13.206.120.119:8085
+				
+				
+				
+		- Docker Volumes :
+		
+			- Used to mantain the persistant data between the Containers.
+			
+			
+			
+			
+		- Docker Build ::
+			
+			Using Docker Build Command ::::
+			
+				- Dockerfile --> Composed of set of instructions to define the properties of Container Image 
+				
+				
+				docker build -t <Container_Repo_Name>/<New_Application_Container_Image_Name>:v1.0	.	
+				
+				
+				Eg.: 
+					docker build -t loksaieta/mydummyappimg1:v1.0 .			# '.' is used to refer the default Dockerfile 
+																			# Execute this command from the path where we have Dockerfile
+																			
+																			
+			vi Dockerfile							# ML Engg./ Developers create Dockerfile and maintain in Source Code Repository.
+			
+			
+			FROM ubuntu 
+			RUN apt update -y 
+			RUN apt install git -y 
+			RUN apt install nginx -y
+			
+				docker build -t loksaieta/mydummyappimg1:v1.0 .		
+		
+		Dockerfile Instructions :
+		
+				FROM 									# To Identify the Base Image
+				RUN 									# To run the package manager
+				COPY 									# To Copy the file from host volume to container volume
+				CP 										# To Copy the file within the container volumes 
+				ADD 									# To Copy the file from Host Volume as well as from URL
+				ENV 									# To define the Environment Variable 
+				ARG 									# To pass Arguements to the Steps in Dockerfile 
+				EXPOSE									# To Define the Container Port 
+				WORKDIR									# To set the current working directory within the Container 
+				CMD										# To set the default start-up command to the container 
+														  This Command can be changed at run-time.
+				ENTRYPOINT								# To set the default start-up command to the container 	
+
+			
+		
+		- Publish Container Images to Container Registry :
+
+	
+
+	
+			docker login 										# Login to Container Registry 
+																# DockerHub User_Name and Access Token 
+																
+					docker login -u loksaieta
+					
+					dsfasdfasdfasdfasdfsdfasd4
+					
+			
+			
+			
+			docker push loksaieta/dummymlopsimg:v1.0
+
+			
+			
+			Developer :
+			
+				source_code :
+				
+					index.html 		--> index.html_V1.0
+					
+				build 
+				
+					Docker image 	--> indexpageimg:V1.0
+						
+		
+			
+Next :::
+
+	Working with ML Project :
+	
+		- GIT
+		
+		- DVC 
+		
+		- Mlflow 
+		
+		- Docker Image Creation
+		
+		- Publish to Container Registry
+
+		- Container Orientation using Kubernetes :
