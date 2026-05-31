@@ -2161,3 +2161,291 @@ Next :::
 		- Publish to Container Registry
 
 		- Container Orientation using Kubernetes :
+
+							
+######################
+Day 6 - 31st May 2026
+######################								
+			
+	
+	- Container Orientation using Kubernetes :
+	
+	
+		
+		loksaieta/dummymlopsimg:v1.0	==> Published to DockerHub 
+
+
+			Target Environments: 
+			
+			
+				- Test 
+				
+				
+				- Prod Environment:
+				
+				
+					- Prod_Server1((dummymlopsimg))
+					
+					- Prod_Server1,2,3,4,5
+					
+					
+					- api-container(dummymlopsimg)
+					
+					- Replicate the Container Instance
+					
+					
+			High Availability of the Applications Running Prod.
+			
+			
+			
+	- Container Orientation using Kubernetes :	- Ensure High Availability of the Containerized Application Services
+
+		Docker & Kubernetes
+
+		Kubernetes ::::
+		
+			- It is a Open-Source Container Orchestration Tool 
+			- Kubernetes is used to Deploy any type of Containers.
+			- It is used to ensure high availability of the Applications/services running thru Containers.
+			- Used to Ensure High Availability of Containers by creating Replicas of Containers.
+			- It supports Auto-Scaling & Load Balancing.
+
+			- Self-healing Capability!
+			
+			- Using this we can achieve Continuous Deployment
+			
+				Service Upgrade/Downgrade can be done without any downtime!
+			
+			
+		loksaieta/dummymlopsimg:v1.0 ==> DockerHub
+		
+		Prod Server1 
+		
+			pod1.1
+			
+			pod1.2
+			
+			pod1.3
+			
+		
+		Kubernetes Architecture & its Components:
+		
+		
+			Kubernetes_Master(Control Plane)
+			
+				Kubernetes_WorkerNodes1,2,3,4,5,6,7 (Target Nodes)
+		
+			- API Server 
+			
+			- ETCD 					-> Single Point of 
+			
+			- Scheduler 
+			
+			- Controller Manager 	-> To ensure that the pods are running in its desired state.
+			
+			- Kubelet 				-> Kubernetes Agent reposible to deploy the Pods
+			
+			- Kubeproxy 
+			
+			- CRI - Container-D 	
+
+	Setup Kubernetes Architecture :::
+	
+		- Minikube/K3s/KIND/		--> To Setup Single Node Cluster.
+						
+		- Managed Services:
+		
+			AWS 	: ECS/ECR/EKS
+			
+			Azure	: ACS/ACR/AKS
+			
+			GCP 	: GCE/GCR/GKE
+	
+		- Kubeadm					--> To Setup the Multi-Node Cluster.
+		
+			Eg.: 
+			
+				Kubernetes_Master(Control_Plane)				
+					Cluster:
+						Kubernetes_WorkerNodes1
+						Kubernetes_WorkerNodes2
+						Kubernetes_WorkerNodes3
+
+
+	- High-Level Steps involved in Setting up of Kubernetes using Kubeadm ::
+	
+	
+		Create Nodes :
+
+			1. Launch EC2 Ubuntu Instances -> (1 + 2)
+			2. Update the Security Group with the required Ports
+		
+		On all the Nodes: (Master & WorkerNodes)
+		
+			3. Assign unique hostname for all the Nodes. 
+			4. Disable Swap on all the Nodes 
+			5. Install and Setup CRI 
+			6. Enable CRI 
+			7. Install and Setup Kubeadm, Kubelet, Kubectl 
+			8. Enable Kubelet
+			
+		Only on Master Node:
+		
+			9. Initialize Kubeadm 		#  api_server,etcd,scheduler,core_dns,kube_proxy,
+			10. Setup the Access to Kubectl using Kube_config File
+			11. Setup Network Plugins - Flannel/Calico Network Plugin 
+			12. Verify the Nodes & System Pods 
+				
+				- kubectl get nodes 
+				
+				- kubectl get pods --all-namespaces 
+
+				- kubectl get pods --all-namespaces -o wide 
+
+			
+		Only on WorkNodes:
+		
+			13. Execute Kubeadm Join Command to attach the WorkerNodes to Kubernetes Master Node
+		
+				Kubernetes_Master(VM)
+						Kubernetes_WorkerNodes1(VM)
+						Kubernetes_WorkerNodes2(VM)
+
+
+
+
+		Terminologies:
+		
+				- Kubernetes Cluster 	- Is the Collection of Worker Nodes
+			
+				- Container Images		- Is the static file, that define the properties and dependencies to create Containers
+										- It is non-executable 
+										- It composed of various layers created using Dockerfile Instructions
+	
+				- Container 			- Is an executable unit of Container Images 	
+
+				- Container Registry 	- Used to version control the container images 
+
+		
+		
+		
+		Kubernetes Concepts:
+		
+			- Pods 				# Atomic unit of scheduling!
+			
+			- Services 
+				- NodePort ***	# To expose the Pods to Internet 
+								# 30000 - 32767
+								
+								
+								65.0.95.45:31217
+				
+				- Load Balancer 
+				
+				- ClusterIP
+
+			
+			- Controller Objects:
+			
+				- Replicaset 
+				
+				- Deployment Controller Object 
+
+		- Controller Objects :::
+		
+		
+		ReplicaSet :::
+		
+			--> Replicaset is used to execute the specific no. of pods in the cluster.
+			--> Used to replicate the pods and able to scale up/down
+			--> The Replicasets will be automatically created, while creating Deployment Controller Object.
+		
+		
+		Deployment Controller Object :::
+		
+			--> It is used to deploy the pods and ensure high availability of pods by creating pod replicas 
+			--> 1. Create Muliple instance/replicas/copies of pods 
+				2. Used to Scale-Up / Scale-Down the Pods 
+				3. Used to Upgrade the application pods 
+				4. Used to Down-grade/roll-back the application pods
+			--> The upgrade/down-grade of application pods can be done without any downtime. 
+			--> To achieve zero-downtime during upgrade/down-grade, By Default, it used Rolling-Update Deployment Strategy.
+				- Supports self-healing.	
+
+	
+			--> Continuous Deployment ::::
+			
+		- webapp_img:v1.0
+		
+		
+		pod  - v1.0		- 	webapp_img:v1.0
+		
+		3 Replicas of Pods :
+		
+		pod - 1.1,1.2,1.3	- 	webapp_img:v1.0
+		
+		
+		- 	webapp_img:v1.0						===========>			- 	webapp_img:v2.0
+		
+		pod - 1.1  - 	webapp_img:v1.0									pod - 1.1  - 	webapp_img:v2.0								
+		
+		pod - 1.2  - 	webapp_img:v1.0									pod - 1.2  - 	webapp_img:v2.0	
+		
+		pod - 1.3  - 	webapp_img:v1.0									pod - 1.3  - 	webapp_img:v2.0
+		
+		
+
+			- Output:
+			
+				- Deploy Object 
+				- Replicaset 
+				- Pod Instance
+
+
+			
+			- Namespaces		# Is the Logical Partition of the Cluster.	
+			
+				Dev 
+				
+				Test 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loksai-api-deploy
+  labels:
+    app: loksai-api-deploy-lbl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: loksaieta/loksai-mlops830api:latest
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loksai-api-svc
+spec:
+  selector:
+    app: loksai-api-deploy-lbl
+  ports:
+  - port: 8000
+    targetPort: 8000
+
+	
+Next:
+
+		ML Project Development/Test/Build/Deployment
+		
+		Kubeflow : Deploy ML Models on Kubernetes Cluster.
+		
