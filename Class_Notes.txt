@@ -3112,6 +3112,77 @@ Day 9 - 8th June 2026
 ######################	
 
 
+Kubeflow Installaiton and Configuration:::
+
+
+
+STAGE 1 - Setup K3s :
+
+Launch EC2 Instance :
+
+	t2.large / t2.xlarge
+	
+	30G EBS Volume 
+
+
+sudo apt update && sudo apt upgrade -y
+
+curl -sfL https://get.k3s.io | sh -
+
+kubectl get nodes
+
+#Add Swap
+
+sudo fallocate -l 4G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
+
+
+STAGE 2 — Install Kubeflow Pipelines
+
+Create namespace
+
+kubectl create ns kubeflow
+
+Install Kubeflow Pipelines
+
+kubectl apply -k \
+github.com/kubeflow/pipelines/manifests/kustomize/cluster-scoped-resources
+
+Then
+
+kubectl apply -k \
+github.com/kubeflow/pipelines/manifests/kustomize/env/dev
+
+Wait for pods
+
+kubectl get pods -n kubeflow
+
+When all pods Running.
+
+Access Kubeflow UI
+
+Port forward
+
+kubectl port-forward -n kubeflow svc/ml-pipeline-ui 8080:80
+
+
+kubectl port-forward --address 0.0.0.0 -n kubeflow svc/ml-pipeline-ui 8080:80
+
+
+Open
+
+http://SERVER_IP:8080
+
+Kubeflow dashboard appears.
+
+
+######################
+
 	- Enviroments :
 	
 		- Build Server 
