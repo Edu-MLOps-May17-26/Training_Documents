@@ -3181,7 +3181,9 @@ http://SERVER_IP:8080
 Kubeflow dashboard appears.
 
 
-######################
+#######################
+Day 9 - 13th June 2026
+#######################	
 
 	- Enviroments :
 	
@@ -3439,4 +3441,189 @@ aws sagemaker create-presigned-domain-url \
 
 If an IAM user tries to open another user’s profile → access denied because the tags won't match.	
 				
+
+
+#######################
+Day 10 - 14th June 2026
+#######################	
+
+
+	- Create K3s Cluster 
 	
+	- Install Kubeflow 
+	
+	- Access Kubeflow - UI 
+	
+		Deployment :
+		
+			1. Deploy using UI
+			
+			2. CICD - Deploy using GitHub-Actions 
+			
+	
+
+	- Dataset --> Input from s3 Bucket 
+	
+	- *.pkl   --> saved to s3 
+
+
+	https://www.kubeflow.org/docs/components/pipelines/concepts/component/
+	
+	
+	- Execute Kubeflow pipeline using github-actions workflow 
+
+
+
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - run: pip install boto3 sagemaker
+
+      - run: python sagemaker_pipeline.py
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ap-south-1
+
+
+
+
+
+
+
+
+mlops-core-project/
+│
+├── src/
+│   ├── data_validation.py
+│   ├── preprocessing.py
+│   ├── train.py
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│
+├── pipeline.py   (To CREATE)
+├── requirements.txt
+
+
+
+https://aws.amazon.com/blogs/machine-learning/build-an-end-to-end-mlops-pipeline-using-amazon-sagemaker-pipelines-github-and-github-actions/
+
+https://docs.aws.amazon.com/sagemaker/latest/dg/mlops.html
+
+https://aws.amazon.com/sagemaker/ai/mlops/
+
+https://github.com/aws/amazon-sagemaker-examples
+
+
+https://www.kubeflow.org/docs/components/pipelines/concepts/component/
+
+
+
+
+MODULE 1 — EC2 + K3S INSTALLATION (BASE KUBERNETES)
+Create working Kubernetes cluster using K3s.
+
+STEP 1 — LAUNCH EC2 INSTANCE
+
+Go to AWS Console:
+
+EC2 Configuration
+Instance type: t2.large (minimum) or t2.xlarge (recommended)
+OS: Ubuntu 24.04 LTS
+Storage: 50 GB EBS (gp3 or gp2)
+Security Group:
+SSH (22) → your IP
+HTTP (80) → 0.0.0.0/0 (optional)
+Custom TCP (6443) → 0.0.0.0/0 (Kubernetes API if needed)
+STEP 2 — CONNECT TO EC2
+
+From local machine:
+
+ssh -i <your-key.pem> ubuntu@<EC2_PUBLIC_IP>
+
+STEP 3 — SYSTEM UPDATE
+sudo apt update && sudo apt upgrade -y
+
+STEP 4 — INSTALL K3S (KUBERNETES LIGHTWEIGHT CLUSTER)
+curl -sfL https://get.k3s.io | sh -
+
+STEP 5 — VERIFY CLUSTER
+sudo kubectl get nodes
+
+Expected output:
+
+NAME           STATUS   ROLES                  AGE   VERSION
+ip-xxxxxx      Ready    control-plane,master   1m    v1.xx.x+k3s
+
+STEP 6 — CONFIGURE KUBECTL ACCESS
+
+mkdir -p ~/.kube
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+sudo chown $USER:$USER ~/.kube/config
+
+Test:
+
+kubectl get nodes
+
+STEP 7 — ENABLE SWAP (OPTIONAL)
+
+sudo fallocate -l 4G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+
+Persist swap:
+
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+
+Verify:
+
+free -h
+
+
+STEP 8 — CHECK CLUSTER STATUS
+kubectl get nodes
+kubectl get pods -A
+
+Expected:
+
+coredns, metrics-server, traefik (running)
+
+
+
+sudo apt update
+sudo apt install -y python3-venv python3-pip python3-full
+
+
+
+python3 -m venv mlops-env
+source mlops-env/bin/activate
+
+pip install kfp==2.8.0
+
+
+
+1. Delete Apps
+2. Delete User Profile
+3. Delete Domain
+4. Delete Endpoints
+5. Clean S3
+6. Delete IAM role (optional)
+
+
+
