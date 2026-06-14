@@ -3107,9 +3107,10 @@ cat /home/devopsadmin/.kube/config 			# create Repository Secret in pipeline
 
 
 
-######################
-Day 9 - 8th June 2026
-######################	
+#######################
+Day 9 - 13th June 2026
+#######################	
+
 
 
 Kubeflow Installaiton and Configuration:::
@@ -3181,9 +3182,6 @@ http://SERVER_IP:8080
 Kubeflow dashboard appears.
 
 
-#######################
-Day 9 - 13th June 2026
-#######################	
 
 	- Enviroments :
 	
